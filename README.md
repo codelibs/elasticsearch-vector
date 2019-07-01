@@ -20,7 +20,7 @@ Please file an [issue](https://github.com/codelibs/elasticsearch-vector/issues "
 
 ## Getting Started
 
-### Set Vector Filed Type
+### Set Vector Field Type
 
 This plugin provides `dense_float_vector` and `sparse_float_vector` field type.
 
