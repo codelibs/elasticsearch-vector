@@ -25,8 +25,8 @@ class org.codelibs.elasticsearch.vector.index.query.VectorScriptDocValues$Sparse
 }
 
 static_import {
-    double cosineSimilarity(List, VectorScriptDocValues.DenseVectorScriptDocValues) bound_to org.codelibs.elasticsearch.vector.index.query.ScoreScriptUtils$CosineSimilarity
-    double dotProduct(List, VectorScriptDocValues.DenseVectorScriptDocValues) from_class org.codelibs.elasticsearch.vector.index.query.ScoreScriptUtils
-    double dotProductSparse(Map, VectorScriptDocValues.SparseVectorScriptDocValues) bound_to org.codelibs.elasticsearch.vector.index.query.ScoreScriptUtils$DotProductSparse
-    double cosineSimilaritySparse(Map, VectorScriptDocValues.SparseVectorScriptDocValues) bound_to org.codelibs.elasticsearch.vector.index.query.ScoreScriptUtils$CosineSimilaritySparse
+    double pairwiseCosineSimilarity(List, VectorScriptDocValues.DenseVectorScriptDocValues) bound_to org.codelibs.elasticsearch.vector.index.query.ScoreScriptUtils$CosineSimilarity
+    double pairwiseDotProduct(List, VectorScriptDocValues.DenseVectorScriptDocValues) from_class org.codelibs.elasticsearch.vector.index.query.ScoreScriptUtils
+    double pairwiseDotProductSparse(Map, VectorScriptDocValues.SparseVectorScriptDocValues) bound_to org.codelibs.elasticsearch.vector.index.query.ScoreScriptUtils$DotProductSparse
+    double pairwiseCosineSimilaritySparse(Map, VectorScriptDocValues.SparseVectorScriptDocValues) bound_to org.codelibs.elasticsearch.vector.index.query.ScoreScriptUtils$CosineSimilaritySparse
 }

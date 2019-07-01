@@ -215,4 +215,8 @@ public class ScoreScriptUtils {
         }
         return v1v2DotProduct;
     }
+
+    public static double pairwiseDotProduct(List<Number> queryVector, VectorScriptDocValues.DenseVectorScriptDocValues dvs) {
+        return dotProduct(queryVector, dvs);
+    }
 }

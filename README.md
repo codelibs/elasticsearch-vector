@@ -45,3 +45,32 @@ This plugin provides `dense_float_vector` and `sparse_float_vector` field type.
       "my_vector" : [0.5, 10, 6]
     }'
 
+### Search By Vectors
+
+This plugin provides the following metrics functions:
+
+- pairwiseCosineSimilarity
+- pairwiseCosineSimilaritySparse
+- pairwiseDotProduct
+- pairwiseDotProductSparse
+
+For examples, the usage is:
+
+```
+curl -s -XPOST "$ES_HOST:$ES_PORT/_search?pretty" -H "Content-Type: application/json" -d "
+{
+  \"query\": {
+    \"script_score\": {
+      \"query\": {
+        \"match_all\": {}
+      },
+      \"script\": {
+        \"source\": \"pairwiseCosineSimilarity(params.query_vector, doc['my_dense_vector']) + 1.0\",
+        \"params\": {
+          \"query_vector\": [10, 10, 10]
+        }
+      }
+    }
+  }
+}"
+```
