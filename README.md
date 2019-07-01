@@ -57,7 +57,7 @@ This plugin provides the following metrics functions:
 For examples, the usage is:
 
 ```
-curl -s -XPOST "$ES_HOST:$ES_PORT/_search?pretty" -H "Content-Type: application/json" -d "
+curl -s -XPOST "localhost:9200/my_index/_search?pretty" -H "Content-Type: application/json" -d "
 {
   \"query\": {
     \"script_score\": {
