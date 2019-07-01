@@ -4,6 +4,7 @@ Elasticsearch Vector Plugin
 ## Overview
 
 Vector Plugin provides vector type for searcing documents.
+The vector type is forked from [mapper-extras](https://github.com/elastic/elasticsearch/tree/7f3ab4524f8745b03b1e0025a56eb2e2dfe02b7a/modules/mapper-extras).
 
 ## Version
 
