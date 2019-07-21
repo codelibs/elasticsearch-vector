@@ -28,6 +28,7 @@ This plugin provides the following field type:
 - sparse_float_vector
 - bit_vector
 
+```
     $ curl -XPUT 'localhost:9200/my_index' -d '{
     {
       "mappings": {
@@ -41,6 +42,7 @@ This plugin provides the following field type:
         }
       }
     }'
+```
 
 ### Add Vector Data
 
