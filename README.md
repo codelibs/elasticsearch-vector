@@ -16,13 +16,17 @@ Please file an [issue](https://github.com/codelibs/elasticsearch-vector/issues "
 
 ## Installation
 
-    $ $ES_HOME/bin/elasticsearch-plugin install org.codelibs:elasticsearch-vector:7.2.0
+    $ $ES_HOME/bin/elasticsearch-plugin install org.codelibs:elasticsearch-vector:7.2.1
 
 ## Getting Started
 
 ### Set Vector Field Type
 
-This plugin provides `dense_float_vector` and `sparse_float_vector` field type.
+This plugin provides the following field type:
+
+- dense_float_vector
+- sparse_float_vector
+- bit_vector
 
     $ curl -XPUT 'localhost:9200/my_index' -d '{
     {
@@ -54,6 +58,7 @@ This plugin provides the following metrics functions:
 - pairwiseCosineSimilaritySparse
 - pairwiseDotProduct
 - pairwiseDotProductSparse
+- pairwiseHammingDistance
 
 For examples, the usage is:
 
@@ -69,6 +74,25 @@ curl -s -XPOST "localhost:9200/my_index/_search?pretty" -H "Content-Type: applic
         \"source\": \"pairwiseCosineSimilarity(params.query_vector, doc['my_dense_vector']) + 1.0\",
         \"params\": {
           \"query_vector\": [10, 10, 10]
+        }
+      }
+    }
+  }
+}"
+```
+
+```
+curl -s -XPOST "localhost:9200/my_index/_search?pretty" -H "Content-Type: application/json" -d "
+{
+  \"query\": {
+    \"script_score\": {
+      \"query\": {
+        \"match_all\": {}
+      },
+      \"script\": {
+        \"source\": \"16.0 - pairwiseHammingDistance(params.query_vector, doc['my_bit_vector'])\",
+        \"params\": {
+          \"query_vector\": [1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0]
         }
       }
     }
