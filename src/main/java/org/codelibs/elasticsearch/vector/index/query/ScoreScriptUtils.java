@@ -219,4 +219,41 @@ public class ScoreScriptUtils {
     public static double pairwiseDotProduct(List<Number> queryVector, VectorScriptDocValues.DenseVectorScriptDocValues dvs) {
         return dotProduct(queryVector, dvs);
     }
+
+    //**************FUNCTIONS FOR BIT VECTORS
+
+    public static double pairwiseHammingDistance(List<Number> queryVector, VectorScriptDocValues.DenseVectorScriptDocValues dvs) {
+        final BytesRef v2Bytes = dvs.getEncodedValue();
+        if (v2Bytes == null) {
+            return 0;
+        }
+        final Iterator<Number> v1Iter = queryVector.iterator();
+        int pos = 7;
+        double distance = 0;
+        for (int i = 0; i < v2Bytes.length; i++) {
+            int v1Byte = 0;
+            while (v1Iter.hasNext()) {
+                int v1 = v1Iter.next().intValue();
+                if (v1 != 0) {
+                    v1 = 1;
+                }
+                v1Byte |= v1 << pos;
+                if (pos == 0) {
+                    break;
+                }
+                pos--;
+            }
+            byte b1 = (byte) v1Byte;
+            byte b2 = v2Bytes.bytes[i];
+            for (int j = 0; j < 8; j++) {
+                if ((b1 & 1) != (b2 & 1)) {
+                    distance++;
+                }
+                b1 >>= 1;
+                b2 >>= 1;
+            }
+            pos = 7;
+        }
+        return distance;
+    }
 }
