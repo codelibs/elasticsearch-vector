@@ -22,7 +22,7 @@ public class VectorPluginTest extends TestCase {
 
     @Override
     protected void setUp() throws Exception {
-        clusterName = "es-minhash-" + System.currentTimeMillis();
+        clusterName = "es-vector-" + System.currentTimeMillis();
         // create runner instance
         runner = new ElasticsearchClusterRunner();
         // create ES nodes
