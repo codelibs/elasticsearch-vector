@@ -16,7 +16,7 @@ Please file an [issue](https://github.com/codelibs/elasticsearch-vector/issues "
 
 ## Installation
 
-    $ $ES_HOME/bin/elasticsearch-plugin install org.codelibs:elasticsearch-vector:7.4.0
+    $ $ES_HOME/bin/elasticsearch-plugin install org.codelibs:elasticsearch-vector:7.4.1
 
 ## Getting Started
 
