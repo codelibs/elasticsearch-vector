@@ -92,7 +92,7 @@ curl -s -XPOST "localhost:9200/my_index/_search?pretty" -H "Content-Type: applic
         \"match_all\": {}
       },
       \"script\": {
-        \"source\": \"16.0 - pairwiseHammingDistance(params.query_vector, doc['my_bit_vector'])\",
+        \"source\": \"pairwiseHammingDistance(params.query_vector, doc['my_bit_vector'], true)\",
         \"params\": {
           \"query_vector\": [1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0]
         }
