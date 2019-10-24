@@ -29,5 +29,5 @@ static_import {
     double pairwiseDotProduct(List, VectorScriptDocValues.DenseVectorScriptDocValues) from_class org.codelibs.elasticsearch.vector.index.query.ScoreScriptUtils
     double pairwiseDotProductSparse(Map, VectorScriptDocValues.SparseVectorScriptDocValues) bound_to org.codelibs.elasticsearch.vector.index.query.ScoreScriptUtils$DotProductSparse
     double pairwiseCosineSimilaritySparse(Map, VectorScriptDocValues.SparseVectorScriptDocValues) bound_to org.codelibs.elasticsearch.vector.index.query.ScoreScriptUtils$CosineSimilaritySparse
-    double pairwiseHammingDistance(List, VectorScriptDocValues.DenseVectorScriptDocValues) from_class org.codelibs.elasticsearch.vector.index.query.ScoreScriptUtils
+    double pairwiseHammingDistance(List, VectorScriptDocValues.DenseVectorScriptDocValues, boolean) bound_to org.codelibs.elasticsearch.vector.index.query.ScoreScriptUtils$HammingDistance
 }

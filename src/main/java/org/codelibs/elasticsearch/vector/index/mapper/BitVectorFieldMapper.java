@@ -177,7 +177,13 @@ public class BitVectorFieldMapper extends FieldMapper implements ArrayValueMappe
                         + "] has exceeded the maximum allowed number of dimensions of [" + MAX_DIMS_COUNT + "]");
             }
         }
-        BinaryDocValuesField field = new BinaryDocValuesField(fieldType().name(), new BytesRef(buf, 0, offset + 1));
+        offset++;
+        while (offset % 4 != 0) {
+            buf = ArrayUtil.grow(buf, offset + 1);
+            buf[offset] = 0;
+            offset++;
+        }
+        BinaryDocValuesField field = new BinaryDocValuesField(fieldType().name(), new BytesRef(buf, 0, offset));
         if (context.doc().getByKey(fieldType().name()) != null) {
             throw new IllegalArgumentException("Field [" + name() + "] of type [" + typeName() +
                 "] doesn't not support indexing multiple values for the same field in the same document");

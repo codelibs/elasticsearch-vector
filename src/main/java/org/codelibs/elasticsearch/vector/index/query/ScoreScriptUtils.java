@@ -222,38 +222,58 @@ public class ScoreScriptUtils {
 
     //**************FUNCTIONS FOR BIT VECTORS
 
-    public static double pairwiseHammingDistance(List<Number> queryVector, VectorScriptDocValues.DenseVectorScriptDocValues dvs) {
-        final BytesRef v2Bytes = dvs.getEncodedValue();
-        if (v2Bytes == null) {
-            return 0;
-        }
-        final Iterator<Number> v1Iter = queryVector.iterator();
-        int pos = 7;
-        double distance = 0;
-        for (int i = 0; i < v2Bytes.length; i++) {
-            int v1Byte = 0;
-            while (v1Iter.hasNext()) {
-                int v1 = v1Iter.next().intValue();
-                if (v1 != 0) {
-                    v1 = 1;
+    public static final class HammingDistance {
+        final int[] queryVector;
+
+        public HammingDistance(List<Number> queryVector) {
+            int size = queryVector.size() / 32;
+            if (queryVector.size() % 32 > 0) {
+                size++;
+            }
+            int[] buf = new int[size];
+            int pos = 31;
+            int offset = 0;
+            for (final Number i : queryVector) {
+                int value = i.intValue();
+                if (value != 0) {
+                    value = 1;
                 }
-                v1Byte |= v1 << pos;
-                if (pos == 0) {
-                    break;
-                }
+                buf[offset] |= (byte) (value << pos);
                 pos--;
-            }
-            byte b1 = (byte) v1Byte;
-            byte b2 = v2Bytes.bytes[i];
-            for (int j = 0; j < 8; j++) {
-                if ((b1 & 1) != (b2 & 1)) {
-                    distance++;
+                if (pos < 0) {
+                    offset++;
+                    pos = 31;
                 }
-                b1 >>= 1;
-                b2 >>= 1;
             }
-            pos = 7;
+            this.queryVector = buf;
         }
-        return distance;
+
+        public double pairwiseHammingDistance(VectorScriptDocValues.DenseVectorScriptDocValues dvs, final boolean recip) {
+            BytesRef value = dvs.getEncodedValue();
+            if (value == null) {
+                if (recip) {
+                    return Double.MAX_VALUE;
+                } else {
+                    return 0;
+                }
+            }
+            int count = 0;
+            for (int i = 0; i < queryVector.length; i++) {
+                int v1 = queryVector[i];
+                int j = i * 4;
+                int v2 = 0;
+                v2 |= value.bytes[j] << 24;
+                v2 |= value.bytes[j + 1] << 16;
+                v2 |= value.bytes[j + 2] << 8;
+                v2 |= value.bytes[j + 3];
+                count += Integer.bitCount(v1 ^ v2);
+            }
+
+            if (recip) {
+                return 1.0 * (1.0 + (double) count);
+            } else {
+                return count;
+            }
+        }
     }
 }
