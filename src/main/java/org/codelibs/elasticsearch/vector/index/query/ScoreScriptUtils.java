@@ -270,7 +270,7 @@ public class ScoreScriptUtils {
             }
 
             if (recip) {
-                return 1.0 * (1.0 + (double) count);
+                return 1.0 / (1.0 + (double) count);
             } else {
                 return count;
             }
