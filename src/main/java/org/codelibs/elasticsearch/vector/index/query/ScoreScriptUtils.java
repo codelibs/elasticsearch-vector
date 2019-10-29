@@ -261,11 +261,8 @@ public class ScoreScriptUtils {
             for (int i = 0; i < queryVector.length; i++) {
                 int v1 = queryVector[i];
                 int j = i * 4;
-                int v2 = 0;
-                v2 |= value.bytes[j] << 24;
-                v2 |= value.bytes[j + 1] << 16;
-                v2 |= value.bytes[j + 2] << 8;
-                v2 |= value.bytes[j + 3];
+                int v2 = (value.bytes[j] & 0xFF) << 24 | (value.bytes[j + 1] & 0xFF) << 16 | (value.bytes[j + 2] & 0xFF) << 8
+                        | (value.bytes[j + 3] & 0xFF);
                 count += Integer.bitCount(v1 ^ v2);
             }
 
