@@ -238,7 +238,7 @@ public class ScoreScriptUtils {
                 if (value != 0) {
                     value = 1;
                 }
-                buf[offset] |= (byte) (value << pos);
+                buf[offset] |= value << pos;
                 pos--;
                 if (pos < 0) {
                     offset++;
