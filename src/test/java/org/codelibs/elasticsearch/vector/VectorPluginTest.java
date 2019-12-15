@@ -64,14 +64,6 @@ public class VectorPluginTest extends TestCase {
                     .startObject()//
                     .startObject("properties")//
 
-                    .startObject("my_dense_vector")//
-                    .field("type", "dense_float_vector")//
-                    .endObject()//
-
-                    .startObject("my_sparse_vector")//
-                    .field("type", "sparse_float_vector")//
-                    .endObject()//
-
                     .startObject("my_bit_vector")//
                     .field("type", "bit_vector")//
                     .endObject()//
@@ -92,11 +84,9 @@ public class VectorPluginTest extends TestCase {
         // create 1000 documents
         for (int i = 1; i <= 1000; i++) {
             String text = "text" + i;
-            float[] vector = new float[] { (float) (i), (float) (1 / i) };
             int[] bitVector = new int[] { i % 2, i * 3 % 2, i * 5 % 2, i * 7 % 2 };
             final IndexResponse indexResponse1 = runner.insert(index, type, String.valueOf(i),
-                    "{\"my_text\":\"" + text + "\",\"my_dense_vector\":" + Arrays.toString(vector) + ",\"my_bit_vector\":"
-                            + Arrays.toString(bitVector) + "}");
+                    "{\"my_text\":\"" + text + "\",\"my_bit_vector\":" + Arrays.toString(bitVector) + "}");
             assertEquals(Result.CREATED, indexResponse1.getResult());
         }
         runner.refresh();

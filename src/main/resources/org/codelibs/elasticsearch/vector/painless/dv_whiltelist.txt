@@ -1,0 +1,6 @@
+class org.codelibs.elasticsearch.vector.index.fielddata.BitVectorScriptDocValues {
+}
+
+static_import {
+    double pairwiseHammingDistance(List, BitVectorScriptDocValues, boolean) bound_to org.codelibs.elasticsearch.vector.util.VectorScriptUtils$HammingDistance
+}

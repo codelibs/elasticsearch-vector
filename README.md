@@ -3,8 +3,7 @@ Elasticsearch Vector Plugin
 
 ## Overview
 
-Vector Plugin provides vector type for searcing documents.
-The vector type is forked from [mapper-extras](https://github.com/elastic/elasticsearch/tree/7f3ab4524f8745b03b1e0025a56eb2e2dfe02b7a/modules/mapper-extras).
+Vector Plugin provides bit\_vector type for searcing documents.
 
 ## Version
 
@@ -16,7 +15,7 @@ Please file an [issue](https://github.com/codelibs/elasticsearch-vector/issues "
 
 ## Installation
 
-    $ $ES_HOME/bin/elasticsearch-plugin install org.codelibs:elasticsearch-vector:7.4.3
+    $ $ES_HOME/bin/elasticsearch-plugin install org.codelibs:elasticsearch-vector:7.5.0
 
 ## Getting Started
 
@@ -24,9 +23,7 @@ Please file an [issue](https://github.com/codelibs/elasticsearch-vector/issues "
 
 This plugin provides the following field type:
 
-- dense_float_vector
-- sparse_float_vector
-- bit_vector
+- bit\_vector
 
 ```
     $ curl -XPUT 'localhost:9200/my_index' -d '{
@@ -34,7 +31,7 @@ This plugin provides the following field type:
       "mappings": {
         "properties": {
           "my_vector": {
-            "type": "dense_float_vector"
+            "type": "bit_vector"
           },
           "my_text" : {
             "type" : "keyword"
@@ -46,42 +43,21 @@ This plugin provides the following field type:
 
 ### Add Vector Data
 
+```
     $ curl -XPUT "localhost:9200/my_index/_doc/1" -d '{
     {
       "my_text" : "text1",
-      "my_vector" : [0.5, 10, 6]
+      "my_vector" : [0, 1, 1]
     }'
+```
 
 ### Search By Vectors
 
 This plugin provides the following metrics functions:
 
-- pairwiseCosineSimilarity
-- pairwiseCosineSimilaritySparse
-- pairwiseDotProduct
-- pairwiseDotProductSparse
 - pairwiseHammingDistance
 
 For examples, the usage is:
-
-```
-curl -s -XPOST "localhost:9200/my_index/_search?pretty" -H "Content-Type: application/json" -d "
-{
-  \"query\": {
-    \"script_score\": {
-      \"query\": {
-        \"match_all\": {}
-      },
-      \"script\": {
-        \"source\": \"pairwiseCosineSimilarity(params.query_vector, doc['my_dense_vector']) + 1.0\",
-        \"params\": {
-          \"query_vector\": [10, 10, 10]
-        }
-      }
-    }
-  }
-}"
-```
 
 ```
 curl -s -XPOST "localhost:9200/my_index/_search?pretty" -H "Content-Type: application/json" -d "

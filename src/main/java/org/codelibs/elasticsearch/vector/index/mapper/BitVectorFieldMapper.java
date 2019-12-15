@@ -29,7 +29,7 @@ import org.apache.lucene.search.DocValuesFieldExistsQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.ArrayUtil;
 import org.apache.lucene.util.BytesRef;
-import org.codelibs.elasticsearch.vector.index.query.VectorDVIndexFieldData;
+import org.codelibs.elasticsearch.vector.index.fielddata.BitVectorIndexFieldData;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentParser.Token;
 import org.elasticsearch.index.fielddata.IndexFieldData;
@@ -64,7 +64,7 @@ public class BitVectorFieldMapper extends FieldMapper implements ArrayValueMappe
 
     public static class Builder extends FieldMapper.Builder<Builder, BitVectorFieldMapper> {
 
-        public Builder(String name) {
+        public Builder(final String name) {
             super(name, Defaults.FIELD_TYPE, Defaults.FIELD_TYPE);
             builder = this;
         }
@@ -75,7 +75,7 @@ public class BitVectorFieldMapper extends FieldMapper implements ArrayValueMappe
         }
 
         @Override
-        public BitVectorFieldMapper build(BuilderContext context) {
+        public BitVectorFieldMapper build(final BuilderContext context) {
             setupFieldType(context);
             return new BitVectorFieldMapper(
                     name, fieldType, defaultFieldType,
@@ -85,8 +85,8 @@ public class BitVectorFieldMapper extends FieldMapper implements ArrayValueMappe
 
     public static class TypeParser implements Mapper.TypeParser {
         @Override
-        public Mapper.Builder<?,?> parse(String name, Map<String, Object> node, ParserContext parserContext) throws MapperParsingException {
-            BitVectorFieldMapper.Builder builder = new BitVectorFieldMapper.Builder(name);
+        public Mapper.Builder<?,?> parse(final String name, final Map<String, Object> node, final ParserContext parserContext) throws MapperParsingException {
+            final BitVectorFieldMapper.Builder builder = new BitVectorFieldMapper.Builder(name);
             return builder;
         }
     }
@@ -95,10 +95,11 @@ public class BitVectorFieldMapper extends FieldMapper implements ArrayValueMappe
 
         public BitVectorFieldType() {}
 
-        protected BitVectorFieldType(BitVectorFieldType ref) {
+        protected BitVectorFieldType(final BitVectorFieldType ref) {
             super(ref);
         }
 
+        @Override
         public BitVectorFieldType clone() {
             return new BitVectorFieldType(this);
         }
@@ -109,30 +110,30 @@ public class BitVectorFieldMapper extends FieldMapper implements ArrayValueMappe
         }
 
         @Override
-        public DocValueFormat docValueFormat(String format, ZoneId timeZone) {
+        public DocValueFormat docValueFormat(final String format, final ZoneId timeZone) {
             throw new UnsupportedOperationException(
                 "Field [" + name() + "] of type [" + typeName() + "] doesn't support docvalue_fields or aggregations");
         }
 
         @Override
-        public Query existsQuery(QueryShardContext context) {
+        public Query existsQuery(final QueryShardContext context) {
             return new DocValuesFieldExistsQuery(name());
         }
 
         @Override
-        public IndexFieldData.Builder fielddataBuilder(String fullyQualifiedIndexName) {
-            return new VectorDVIndexFieldData.Builder(true);
+        public IndexFieldData.Builder fielddataBuilder(final String fullyQualifiedIndexName) {
+            return new BitVectorIndexFieldData.Builder( );
         }
 
         @Override
-        public Query termQuery(Object value, QueryShardContext context) {
+        public Query termQuery(final Object value, final QueryShardContext context) {
             throw new UnsupportedOperationException(
                 "Field [" + name() + "] of type [" + typeName() + "] doesn't support queries");
         }
     }
 
-    private BitVectorFieldMapper(String simpleName, MappedFieldType fieldType, MappedFieldType defaultFieldType,
-                                   Settings indexSettings, MultiFields multiFields, CopyTo copyTo) {
+    private BitVectorFieldMapper(final String simpleName, final MappedFieldType fieldType, final MappedFieldType defaultFieldType,
+                                   final Settings indexSettings, final MultiFields multiFields, final CopyTo copyTo) {
         super(simpleName, fieldType, defaultFieldType, indexSettings, multiFields, copyTo);
         assert fieldType.indexOptions() == IndexOptions.NONE;
     }
@@ -148,7 +149,7 @@ public class BitVectorFieldMapper extends FieldMapper implements ArrayValueMappe
     }
 
     @Override
-    public void parse(ParseContext context) throws IOException {
+    public void parse(final ParseContext context) throws IOException {
         if (context.externalValueSet()) {
             throw new IllegalArgumentException("Field [" + name() + "] of type [" + typeName() + "] can't be used in multi-fields");
         }
@@ -183,7 +184,7 @@ public class BitVectorFieldMapper extends FieldMapper implements ArrayValueMappe
             buf[offset] = 0;
             offset++;
         }
-        BinaryDocValuesField field = new BinaryDocValuesField(fieldType().name(), new BytesRef(buf, 0, offset));
+        final BinaryDocValuesField field = new BinaryDocValuesField(fieldType().name(), new BytesRef(buf, 0, offset));
         if (context.doc().getByKey(fieldType().name()) != null) {
             throw new IllegalArgumentException("Field [" + name() + "] of type [" + typeName() +
                 "] doesn't not support indexing multiple values for the same field in the same document");
@@ -192,8 +193,8 @@ public class BitVectorFieldMapper extends FieldMapper implements ArrayValueMappe
     }
 
     @Override
-    protected void parseCreateField(ParseContext context, List<IndexableField> fields) {
-        throw new AssertionError("parse is implemented directly");
+    protected void parseCreateField(final ParseContext context, final List<IndexableField> fields) {
+        throw new UnsupportedOperationException("parse is implemented directly");
     }
 
     @Override

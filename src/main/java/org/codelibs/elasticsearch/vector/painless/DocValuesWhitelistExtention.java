@@ -13,24 +13,24 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.codelibs.elasticsearch.vector;
+package org.codelibs.elasticsearch.vector.painless;
 
 import java.util.Collections;
-import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
-import org.codelibs.elasticsearch.vector.index.mapper.BitVectorFieldMapper;
-import org.elasticsearch.index.mapper.Mapper;
-import org.elasticsearch.plugins.MapperPlugin;
-import org.elasticsearch.plugins.Plugin;
-import org.elasticsearch.plugins.SearchPlugin;
+import org.elasticsearch.painless.spi.PainlessExtension;
+import org.elasticsearch.painless.spi.Whitelist;
+import org.elasticsearch.painless.spi.WhitelistLoader;
+import org.elasticsearch.script.ScoreScript;
+import org.elasticsearch.script.ScriptContext;
 
-public class VectorPlugin extends Plugin implements MapperPlugin, SearchPlugin {
+public class DocValuesWhitelistExtention implements PainlessExtension {
 
     @Override
-    public Map<String, Mapper.TypeParser> getMappers() {
-        final Map<String, Mapper.TypeParser> mappers = new LinkedHashMap<>();
-        mappers.put(BitVectorFieldMapper.CONTENT_TYPE, new BitVectorFieldMapper.TypeParser());
-        return Collections.unmodifiableMap(mappers);
+    public Map<ScriptContext<?>, List<Whitelist>> getContextWhitelists() {
+        return Collections.singletonMap(ScoreScript.CONTEXT,
+                Collections.singletonList(WhitelistLoader.loadFromResourceFiles(DocValuesWhitelistExtention.class, "dv_whitelist.txt")));
     }
+
 }
