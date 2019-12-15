@@ -25,12 +25,12 @@ import org.elasticsearch.painless.spi.WhitelistLoader;
 import org.elasticsearch.script.ScoreScript;
 import org.elasticsearch.script.ScriptContext;
 
-public class DocValuesWhitelistExtention implements PainlessExtension {
+public class DocValuesWhitelistExtension implements PainlessExtension {
 
     @Override
     public Map<ScriptContext<?>, List<Whitelist>> getContextWhitelists() {
         return Collections.singletonMap(ScoreScript.CONTEXT,
-                Collections.singletonList(WhitelistLoader.loadFromResourceFiles(DocValuesWhitelistExtention.class, "dv_whitelist.txt")));
+                Collections.singletonList(WhitelistLoader.loadFromResourceFiles(DocValuesWhitelistExtension.class, "dv_whitelist.txt")));
     }
 
 }
