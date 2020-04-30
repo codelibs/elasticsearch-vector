@@ -56,9 +56,9 @@ public final class VectorScriptUtils {
             final BytesRef value = dvs.getValue();
             if (value == null) {
                 if (recip) {
-                    return 1.0;
-                } else {
                     return 0;
+                } else {
+                    return Double.MAX_VALUE;
                 }
             }
             int count = 0;
