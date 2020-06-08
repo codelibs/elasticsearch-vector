@@ -17,6 +17,7 @@ package org.codelibs.elasticsearch.vector.index.fielddata;
 
 import org.apache.lucene.index.LeafReaderContext;
 import org.apache.lucene.search.SortField;
+import org.elasticsearch.common.util.BigArrays;
 import org.elasticsearch.index.Index;
 import org.elasticsearch.index.IndexSettings;
 import org.elasticsearch.index.fielddata.IndexFieldData;
@@ -26,7 +27,11 @@ import org.elasticsearch.index.fielddata.plain.DocValuesIndexFieldData;
 import org.elasticsearch.index.mapper.MappedFieldType;
 import org.elasticsearch.index.mapper.MapperService;
 import org.elasticsearch.indices.breaker.CircuitBreakerService;
+import org.elasticsearch.search.DocValueFormat;
 import org.elasticsearch.search.MultiValueMode;
+import org.elasticsearch.search.sort.BucketedSort;
+import org.elasticsearch.search.sort.BucketedSort.ExtraData;
+import org.elasticsearch.search.sort.SortOrder;
 
 public class BitVectorIndexFieldData extends DocValuesIndexFieldData implements IndexFieldData<BitVectorAtomicFieldData> {
 
@@ -57,6 +62,12 @@ public class BitVectorIndexFieldData extends DocValuesIndexFieldData implements 
              return new BitVectorIndexFieldData(indexSettings.getIndex(), fieldType.name());
         }
 
+    }
+
+    @Override
+    public BucketedSort newBucketedSort(BigArrays bigArrays, Object missingValue, MultiValueMode sortMode, Nested nested,
+            SortOrder sortOrder, DocValueFormat format, int bucketSize, ExtraData extra) {
+        throw new UnsupportedOperationException("Unsupported method invocation.");
     }
 
 }

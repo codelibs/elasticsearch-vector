@@ -21,11 +21,11 @@ import org.apache.lucene.index.BinaryDocValues;
 import org.apache.lucene.index.DocValues;
 import org.apache.lucene.index.LeafReader;
 import org.elasticsearch.ElasticsearchException;
-import org.elasticsearch.index.fielddata.AtomicFieldData;
+import org.elasticsearch.index.fielddata.LeafFieldData;
 import org.elasticsearch.index.fielddata.ScriptDocValues;
 import org.elasticsearch.index.fielddata.SortedBinaryDocValues;
 
-public class BitVectorAtomicFieldData implements AtomicFieldData {
+public class BitVectorAtomicFieldData implements LeafFieldData {
 
     private final LeafReader reader;
     private final String field;
